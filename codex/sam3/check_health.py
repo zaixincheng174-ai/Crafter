@@ -1,7 +1,16 @@
 """Check readiness stays responsive while inference is waiting for its lock."""
 from concurrent.futures import ThreadPoolExecutor
 
+import torch
+from sam3.model.vitdet import Block
+
 from serve import inference_lock, native
+
+block = Block(dim=64, num_heads=4, input_size=(4, 4)).eval().float()
+with torch.inference_mode():
+    result = block(torch.randn(1, 4, 4, 64, dtype=torch.float32))
+assert result.dtype == torch.float32
+print("Official SAM3 block supports the author's FP32 server.")
 
 
 def inference_request():

@@ -23,4 +23,4 @@ jobs:
           context: codex/sam3
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/zaixincheng174-ai/crafter-sam3:1.0.1-6398457-f1647e8
+          tags: ghcr.io/zaixincheng174-ai/crafter-sam3:1.0.2-6398457-86ed770
