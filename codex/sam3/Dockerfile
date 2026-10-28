@@ -10,8 +10,9 @@ RUN git clone --depth 1 https://github.com/facebookresearch/sam3.git /opt/sam3 \
     && pip install -e /opt/sam3 flask portalocker einops 'opencv-python-headless<4.12' pycocotools scipy psutil \
     && git clone --depth 1 https://github.com/HaozheZhao/Crafter.git /opt/crafter \
     && test "$(git -C /opt/crafter rev-parse HEAD)" = 6398457f33179a45ff581f7d73efdcf92be2cd82
-COPY prefetch.py serve.py start.sh /opt/service/
+COPY prefetch.py serve.py start.sh check_health.py /opt/service/
 RUN python -m py_compile /opt/service/prefetch.py /opt/service/serve.py \
-    && python -c 'from sam3.model_builder import build_sam3_image_model; from sam3.model.sam3_image_processor import Sam3Processor'
+    && python -c 'from sam3.model_builder import build_sam3_image_model; from sam3.model.sam3_image_processor import Sam3Processor' \
+    && python /opt/service/check_health.py
 EXPOSE 8765
 CMD ["bash", "/opt/service/start.sh"]
